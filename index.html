@@ -2,6 +2,87 @@
 <html>
 <head>
     <title>Ayurvedic Prakriti Quiz</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        /* Basic reset and full-height layout */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background: #fcfbf8;
+            color: #222;
+        }
+
+        /* Centering container that fills the viewport */
+        .site-container {
+            min-height: 100vh; /* fill viewport height */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            box-sizing: border-box;
+            padding: 20px;
+        }
+
+        /* Make content max-width for readability and responsive */
+        .content {
+            width: 100%;
+            max-width: 900px;
+        }
+
+        h1 { font-size: clamp(1.4rem, 2.4vw, 2rem); margin: 8px 0; }
+        h2 { font-size: clamp(1rem, 2vw, 1.2rem); margin-top: 16px; }
+
+        form input[type="text"],
+        form input[type="email"],
+        form input[type="tel"],
+        form input[type="radio"],
+        form button,
+        #savePdfBtn, #sendEmailBtn {
+            box-sizing: border-box;
+            font-size: 1rem;
+        }
+
+        /* Make inputs and buttons fluid on small screens */
+        form input[type="text"],
+        form input[type="email"],
+        form input[type="tel"] {
+            width: 100%;
+            max-width: 100%;
+            padding: 8px 10px;
+            margin: 6px 0 12px 0;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+
+        form label, form b, form p, ul, li {
+            line-height: 1.4;
+        }
+
+        /* Make radio rows stack on very small screens */
+        @media (max-width: 520px) {
+            input[type="radio"] + span, input[type="radio"] + label {
+                display: block;
+            }
+        }
+
+        button {
+            background: #2f855a;
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .action-row { margin-top: 12px; display:flex; gap:8px; flex-wrap:wrap; }
+
+        /* Ensure results area doesn't overflow horizontally */
+        #resultsSection, #whatsNextSection { word-wrap:break-word; }
+    </style>
 </head>
 <body>
     <h1>🌿Discover Your Ayurvedic Prakriti (Unique Constitution)</h1>
