@@ -24,13 +24,21 @@
             align-items: center;
             justify-content: flex-start;
             box-sizing: border-box;
-            padding: 20px;
+            padding: 40px; /* more generous padding for desktop */
         }
 
         /* Make content max-width for readability and responsive */
         .content {
             width: 100%;
             max-width: 900px;
+            box-sizing: border-box;
+            padding: 24px; /* inner padding so elements don't touch edges */
+        }
+
+        /* Reduce padding on small screens so content fits while still breathing */
+        @media (max-width: 520px) {
+            .site-container { padding: 16px; }
+            .content { padding: 12px; }
         }
 
         h1 { font-size: clamp(1.4rem, 2.4vw, 2rem); margin: 8px 0; }
@@ -85,9 +93,11 @@
     </style>
 </head>
 <body>
-    <h1>🌿Discover Your Ayurvedic Prakriti (Unique Constitution)</h1>
-    <b>Unlock the power of your unique nature</b>
-    <br>
+        <div class="site-container">
+            <div class="content">
+        <h1>🌿Discover Your Ayurvedic Prakriti (Unique Constitution)</h1>
+        <b>Unlock the power of your unique nature</b>
+        <br>
 
 <p>
 Your Prakriti is your mind-body blueprint—shaped at birth and guiding everything from your
@@ -249,7 +259,8 @@ or recent lifestyle changes like weight gain). </p>
     <input type="radio" name="q24" value="C"> c) I gain weight easily and find it hard to lose, even with effort<br><br>
 
     <!-- Submit -->
-    <button type="button" onclick="calculatePrakriti()">Calculate My Prakriti</button>
+    <button id="calculateBtn" type="button" onclick="calculatePrakriti()" aria-disabled="true" disabled>Calculate My Prakriti</button>
+    <div id="missingNotice" style="color:#a00; margin-top:8px; display:none;">Please answer all questions to enable the button.</div>
 </form>
 
 <div id="resultsSection" style="display:none;">
@@ -337,16 +348,16 @@ function calculatePrakriti() {
     } else if (percentages.Pitta + percentages.Kapha >= 75) {
         dominantDosha = "Pitta-Kapha Prakriti";
         detailsText = "Traits: Strong, steady, and determined, Pitta-Kapha individuals have a solid build with great endurance. They combine the intensity of Pitta with the stability of Kapha, making them both driven and patient.\nStrengths: Great physical and mental endurance, leadership abilities, and a calm but ambitious nature. They are excellent at strategic planning and execution.\nWeaknesses: Can be stubborn, overly ambitious, and prone to weight gain or inflammation. They may struggle with stress-related issues.\nBest Practices: Keeping cool with hydrating, light foods, and regular movement helps balance them. Avoiding excessive workload and overindulgence prevents burnout.\n";
-    } else if (percentages.Vata >= 50 && percentages.Vata > percentages.Pitta && percentages.Vata > percentages.Kapha) {
+    } else if (percentages.Vata >= 60 && percentages.Vata > percentages.Pitta && percentages.Vata > percentages.Kapha) {
         dominantDosha = "🌬️ Vata Prakriti (Air + Ether)";
         detailsText = "Traits: Vata individuals are light, lean, and energetic. They often have dry skin, thin hair, cold hands and feet, and quick, creative minds. They may also be restless and easily distracted. \nStrengths: Highly creative, adaptable, fast learners, great at multitasking, with a strong sense of curiosity and love for new experiences. \nChallenges: Prone to anxiety, overthinking, irregular habits, fluctuating energy, digestive issues, dryness, sleep disturbances, and low bone density. \nLikes: Warm environments, creative pursuits, movement-based activities, and spontaneous adventures. Dislikes: Cold weather, routine, heavy foods, and feeling stuck or overstimulated. \nBest Practices: Vata types thrive with warm, nourishing foods, grounding routines, and calming practices like yoga and meditation. Avoid overstimulation (too much screen time, noise, or motion), wind, and cold. Staying warm and hydrated, and keeping a regular sleep and meal schedule helps keep them in balance.";
-    } else if (percentages.Pitta >= 50 && percentages.Pitta > percentages.Vata && percentages.Pitta > percentages.Kapha) {
+    } else if (percentages.Pitta >= 60 && percentages.Pitta > percentages.Vata && percentages.Pitta > percentages.Kapha) {
         dominantDosha = "🔥 Pitta Prakriti (Fire + Water)";
         detailsText = "Traits: Pitta types have a medium, athletic build with warm skin, sharp features, and strong digestion. They are intelligent, competitive, and goal-oriented, but can be intense and impatient. Their internal fire gives them strong energy and ambition.\nStrengths: Sharp intellect, strong leadership skills, determination, and excellent focus. Natural problem-solvers who thrive in competitive and challenging environments.\nChallenges: Prone to anger, irritability, and perfectionism. Common issues include inflammation, acidity, overheating, and burnout due to overworking.\nLikes: Challenges, competition, intellectual debates, and spicy, flavorful foods.\nDislikes: Heat, delays, inefficiency, and indecisiveness.\nBest Practices: Cooling foods, regular hydration, and relaxation techniques—like meditation, swimming, or spending time in nature—help balance their fiery energy. Avoid excessive caffeine, alcohol, prolonged sun exposure, and overly spicy foods to prevent aggravation.";
-    } else if (percentages.Kapha >= 50 && percentages.Kapha > percentages.Vata && percentages.Kapha > percentages.Pitta) {
+    } else if (percentages.Kapha >= 60 && percentages.Kapha > percentages.Vata && percentages.Kapha > percentages.Pitta) {
         dominantDosha = "🌿 Kapha Prakriti (Earth + Water)";
         detailsText = "Traits: Kapha individuals have a strong, broad, and well-built physique. They tend to have soft skin, thick hair, and steady energy. Emotionally, they are calm, nurturing, and patient but can be prone to laziness and attachment.\nStrengths: Naturally strong, resilient, compassionate, and reliable. They have great endurance and are deeply caring toward others.\nWeaknesses: Prone to sluggishness, weight gain, and emotional attachment. They may struggle with motivation and can become resistant to change.\nLikes: Comfort, stability, routine, and sweet, rich foods.\nDislikes: Cold and damp weather, excessive movement, and sudden change.\nBest Practices: Regular exercise, stimulating activities, and light, warm foods help keep Kapha balanced. Avoiding overeating, excessive sleep, and too much routine prevents stagnation.\n";
-    } else {
+    } else if (percentages.Vata < 50 && percentages.Pitta < 50 && percentages.Kapha < 50) {
         dominantDosha = "Tridoshic Prakriti";
         detailsText = "Traits: A balanced mix of all three doshas, Tridoshic individuals have stable energy, a well-proportioned body, and a naturally harmonious nature. They can adapt well to different situations.\nStrengths: Naturally balanced, physically and emotionally strong, and resilient to change. They have a steady approach to life.\nWeaknesses: If they become imbalanced, all three doshas can be affected, leading to a variety of issues.\nBest Practices: Maintaining a consistent routine, eating according to the season, and practicing self-care regularly help keep Tridoshic individuals in harmony.\n";
     }
@@ -425,6 +436,25 @@ function saveAsPDF() {
 }
 </script>
 
+
+<script>
+// Keyboard accessibility: press Enter to calculate when enabled
+document.addEventListener('DOMContentLoaded', function() {
+    const btn = document.getElementById('calculateBtn');
+    if (!btn) return;
+    document.addEventListener('keydown', function(e) {
+        // Only act on Enter/Return
+        if (e.key === 'Enter' || e.key === 'Return') {
+            // If button is enabled, trigger it
+            if (!btn.disabled) {
+                e.preventDefault();
+                btn.click();
+            }
+        }
+    });
+});
+</script>
+
 <!-- JavaScript for Email -->
 <script>
 function sendResultsByEmail() {
@@ -480,10 +510,58 @@ function sendResultsByEmail() {
 </script>
 
 <script>
+// Script to enable Calculate button only when all questions are answered
+(function() {
+    function allAnswered() {
+        const form = document.forms['prakritiQuiz'];
+        for (let i = 1; i <= 24; i++) {
+            const radios = form['q' + i];
+            if (!radios) return false; // missing question
+            let answered = false;
+            if (radios.length) {
+                for (let r = 0; r < radios.length; r++) {
+                    if (radios[r].checked) { answered = true; break; }
+                }
+            } else {
+                if (radios.checked) answered = true;
+            }
+            if (!answered) return false;
+        }
+        return true;
+    }
 
-    // ...existing code...
+    function updateCalculateButton() {
+        const btn = document.getElementById('calculateBtn');
+        const notice = document.getElementById('missingNotice');
+        if (allAnswered()) {
+            btn.disabled = false;
+            btn.setAttribute('aria-disabled', 'false');
+            if (notice) notice.style.display = 'none';
+        } else {
+            btn.disabled = true;
+            btn.setAttribute('aria-disabled', 'true');
+            if (notice) notice.style.display = 'block';
+        }
+    }
+
+    // Attach listeners to all radio inputs in the form
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.forms['prakritiQuiz'];
+        if (!form) return;
+        const inputs = form.querySelectorAll('input[type="radio"]');
+        inputs.forEach(function(inp) {
+            inp.addEventListener('change', updateCalculateButton);
+        });
+
+        // run once on load in case some are pre-selected
+        updateCalculateButton();
+    });
+})();
+
 </script>
 
+</div> <!-- .content -->
+</div> <!-- .site-container -->
 
 </body>
 </html>
